@@ -226,7 +226,19 @@ def midtread(x: float) -> int:
     """
     Midtread provides the _nearest_ int.
     Compare similar but different rounding with int() and floor().
+
+    >>> num = 0.6
+
+    >>> midtread(num)
+    1
+
+    >>> int(num)
+    0
+
+    >>> np.floor(num)
+    0.0
     """
+
     return int(x + 0.5)
 
 
