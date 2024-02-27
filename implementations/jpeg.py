@@ -25,6 +25,71 @@ continuous_tone_pattern = np.array(
 )
 
 
+dct_matrix = np.array(
+    [
+        [0.354, 0.354, 0.354, 0.354, 0.354, 0.354, 0.354, 0.354],
+        [0.49, 0.416, 0.278, 0.098, -0.098, -0.278, -0.416, -0.49],
+        [0.462, 0.191, -0.191, -0.462, -0.462, -0.191, 0.191, 0.462],
+        [0.416, -0.098, -0.49, -0.278, 0.278, 0.49, 0.098, -0.416],
+        [0.354, -0.354, -0.354, 0.354, 0.354, -0.354, -0.354, 0.354],
+        [0.278, -0.49, 0.098, 0.416, -0.416, -0.098, 0.49, -0.278],
+        [0.191, -0.462, 0.462, -0.191, -0.191, 0.462, -0.462, 0.191],
+        [0.098, -0.278, 0.416, -0.49, 0.49, -0.416, 0.278, -0.098]
+    ]
+)
+
+
+def create_DCT_matrix(
+        n: int = 8
+) -> np.array:
+    """
+    Create a DCT transform matrix (cosine functions of various periodicities).
+    Create from scratch, and compare with scipy.
+    (Compare and contrast also with the DCT directly on a signal at `dct`, below).
+    Test properties.
+
+    The DCT matrix is bascially the result of a DCT on in i-matrix of the given size.
+    First with scipy:
+
+    >>> i = np.eye(8)
+    >>> c_scipy = fft.dct(i, type=2, norm='ortho').round(3).transpose()
+    >>> np.allclose(c_scipy, dct_matrix)
+    True
+
+    Now from scratch (here):
+
+    >>> C = create_DCT_matrix()
+    >>> np.allclose(C.round(3), dct_matrix)
+    True
+
+    As such, the inverse relation C_T = C_-1
+    >>> product = (np.transpose(C) @ C).round(4)
+    >>> product
+    array([[ 1., -0.,  0.,  0., -0.,  0.,  0., -0.],
+           [-0.,  1.,  0.,  0.,  0., -0., -0.,  0.],
+           [ 0.,  0.,  1., -0., -0., -0., -0.,  0.],
+           [ 0.,  0., -0.,  1.,  0.,  0.,  0.,  0.],
+           [-0.,  0., -0.,  0.,  1., -0., -0., -0.],
+           [ 0., -0., -0.,  0., -0.,  1.,  0.,  0.],
+           [ 0., -0., -0.,  0., -0.,  0.,  1.,  0.],
+           [-0.,  0.,  0.,  0., -0.,  0.,  0.,  1.]])
+
+    """
+    c = np.zeros((n, n))
+
+    i = 0
+    for j in range(n):
+        c[i][j] = np.sqrt(1 / n)
+
+    for i in range(1, n):  # k
+        for j in range(n):  # n
+            c[i][j] = np.cos(
+                (np.pi * i * ((2 * j) + 1)) / (2 * n)  # This line (i, j, n)
+            ) * np.sqrt(2 / n)
+
+    return c
+
+
 def dct(
         a: np.array,
         scaling: bool = True
@@ -80,7 +145,7 @@ def dct(
     for k in range(N):
         y[k] = 2 * sum(
             [a[n] * np.cos(
-                (np.pi * k * ((2 * n) + 1)) / (2 * N)
+                (np.pi * k * ((2 * n) + 1)) / (2 * N)  # This line (k, n, N)
             ) for n in range(N)
              ]
         )

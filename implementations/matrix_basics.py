@@ -113,6 +113,35 @@ def array_subtraction(
     return a - n
 
 
+def dot_from_scratch(
+        a: np.array,
+        b: np.array
+) -> np.array:
+    """
+    Simple demonstration of the dot product from scratch on two N-by-one arrays.
+
+    >>> a = np.array([1, 2, 3, 4])
+    >>> b = np.array([5, -6, 7, -8])
+
+    >>> s = dot_from_scratch(a, b)
+    >>> s
+    -18
+
+    >>> np.allclose(s, np.dot(a, b))
+    True
+
+    >>> np.allclose(s, np.matmul(a, b))
+    True
+
+    >>> np.allclose(s, a @ b)
+    True
+
+    """
+    return sum(
+        [(a[i] * b[i]) for i in range(len(a))]
+    )
+
+
 theta = np.array(
     [
         [39.88, 6.56, -2.24, 1.22, -0.37, -1.08, 0.79, 1.13],
@@ -228,9 +257,14 @@ def midtread(x: float) -> int:
     Compare similar but different rounding with int() and floor().
 
     >>> num = 0.6
-
     >>> midtread(num)
     1
+
+    Same as:
+    >>> int(np.round(num))
+    1
+
+    Different from:
 
     >>> int(num)
     0
