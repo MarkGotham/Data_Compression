@@ -69,9 +69,9 @@ h_4_norm = np.array(
 h_8 = np.array(
     [
         [1] * 8,
-        [1] * 4 + [-1] * 4,
-        [1, 1, -1, -1] + [0] * 4,
-        [0] * 4 + [1, 1, -1, -1],
+        ([1] * 4) + ([-1] * 4),
+        [1, 1, -1, -1] + ([0] * 4),
+        ([0] * 4) + [1, 1, -1, -1],
         [1, -1, 0, 0, 0, 0, 0, 0],
         [0, 0, 1, -1, 0, 0, 0, 0],
         [0, 0, 0, 0, 1, -1, 0, 0],
@@ -83,15 +83,15 @@ h_8 = np.array(
 h_8_norm = np.array(
     [
         [1] * 8,
-        [1] * 4 + [-1] * 4,
-        [np.sqrt(2)] * 2 + [-np.sqrt(2)] * 2 + [0] * 4,
-        [0] * 4 + [np.sqrt(2)] * 2 + [-np.sqrt(2)] * 2,
+        ([1] * 4) + ([-1] * 4),
+        ([np.sqrt(2)] * 2) + ([-np.sqrt(2)] * 2) + ([0] * 4),
+        ([0] * 4) + ([np.sqrt(2)] * 2) + ([-np.sqrt(2)] * 2),
         [2, -2, 0, 0, 0, 0, 0, 0],
         [0, 0, 2, -2, 0, 0, 0, 0],
         [0, 0, 0, 0, 2, -2, 0, 0],
         [0, 0, 0, 0, 0, 0, 2, -2]
     ]
-)
+) / np.sqrt(8)
 
 
 # -------------------------------------------------------------------------------------------------
@@ -300,11 +300,15 @@ def is_orthogonal(
     >>> is_orthogonal(h_4, require_i=False)
     True
 
+    The normalised matrices are, either way
 
     >>> is_orthogonal(h_4_norm)
     True
 
-    And one False case.
+    >>> is_orthogonal(h_8_norm)
+    True
+
+    And one other False case.
 
     >>> is_orthogonal(np.array([range(9)]).reshape(3, 3))
     False
@@ -402,6 +406,8 @@ def make_double_h(
     """
     Make h_2n from h_n.
 
+    E.g., hn_4_norm from h_2_norm:
+
     >>> hn_4_norm = make_double_h(h_2_norm)
     >>> hn_4_norm
     array([[ 0.5       ,  0.5       ,  0.5       ,  0.5       ],
@@ -414,7 +420,7 @@ def make_double_h(
     >>> np.allclose(hn_4_norm, make_h4())
     True
 
-    And now without normalisation (note both the `h_2` and False arguments).
+    And now without normalisation (note both the `h_2` and `norm=False` arguments).
     >>> hn_4 = make_double_h(h_2, norm=False)
     >>> hn_4
     array([[ 1.,  1.,  1.,  1.],
@@ -425,6 +431,58 @@ def make_double_h(
     Again, check results match above
 
     >>> np.allclose(hn_4, make_h4(norm=False))
+    True
+
+    Now for h_8 from h_4
+
+    >>> hn_8_norm = make_double_h(hn_4_norm).round(3)
+    >>> hn_8_norm
+    array([[ 0.354,  0.354,  0.354,  0.354,  0.354,  0.354,  0.354,  0.354],
+           [ 0.354,  0.354,  0.354,  0.354, -0.354, -0.354, -0.354, -0.354],
+           [ 0.5  ,  0.5  , -0.5  , -0.5  ,  0.   ,  0.   , -0.   , -0.   ],
+           [ 0.   ,  0.   , -0.   , -0.   ,  0.5  ,  0.5  , -0.5  , -0.5  ],
+           [ 0.707, -0.707,  0.   , -0.   ,  0.   , -0.   ,  0.   , -0.   ],
+           [ 0.   , -0.   ,  0.707, -0.707,  0.   , -0.   ,  0.   , -0.   ],
+           [ 0.   , -0.   ,  0.   , -0.   ,  0.707, -0.707,  0.   , -0.   ],
+           [ 0.   , -0.   ,  0.   , -0.   ,  0.   , -0.   ,  0.707, -0.707]])
+
+    >>> np.allclose(hn_8_norm, h_8_norm.round(3))
+    True
+
+    And while we're at it let's confirm `h_8_norm` to be orthogonal.
+
+    Take a look:
+
+    >>> comp = (h_8_norm @ h_8_norm.transpose()).round(3)
+    >>> comp
+    array([[ 1.,  0.,  0.,  0., -0., -0., -0., -0.],
+           [ 0.,  1.,  0.,  0., -0., -0.,  0.,  0.],
+           [ 0.,  0.,  1.,  0.,  0.,  0.,  0.,  0.],
+           [ 0.,  0.,  0.,  1.,  0.,  0.,  0.,  0.],
+           [-0., -0.,  0.,  0.,  1.,  0.,  0.,  0.],
+           [-0., -0.,  0.,  0.,  0.,  1.,  0.,  0.],
+           [-0.,  0.,  0.,  0.,  0.,  0.,  1.,  0.],
+           [-0.,  0.,  0.,  0.,  0.,  0.,  0.,  1.]])
+
+    And confirm:
+
+    >>> is_orthogonal(h_8_norm @ h_8_norm.transpose(), require_i=True)
+    True
+
+    And finally, not normalised:
+
+    >>> hn_8 = make_double_h(h_4, norm=False)
+    >>> hn_8
+    array([[ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+           [ 1.,  1.,  1.,  1., -1., -1., -1., -1.],
+           [ 1.,  1., -1., -1.,  0.,  0.,  0.,  0.],
+           [ 0.,  0.,  0.,  0.,  1.,  1., -1., -1.],
+           [ 1., -1.,  0., -0.,  0., -0.,  0., -0.],
+           [ 0., -0.,  1., -1.,  0., -0.,  0., -0.],
+           [ 0., -0.,  0., -0.,  1., -1.,  0., -0.],
+           [ 0., -0.,  0., -0.,  0., -0.,  1., -1.]])
+
+    >>> np.allclose(hn_8, h_8)
     True
 
     """
@@ -438,7 +496,7 @@ def make_double_h(
     i_part = np.kron(i_n, (1, -1))
 
     if norm:
-        return np.concatenate((h_part, i_part), axis=0) / np.sqrt(n)
+        return np.concatenate((h_part, i_part), axis=0) / np.sqrt(2)
     else:
         return np.concatenate((h_part, i_part), axis=0)
 
@@ -471,7 +529,6 @@ def values_from_salomon():
     a3_product = a3 @ a2_expected  # does = a2_expected in this case.
     a3_expected = np.array([143.375, 64.125, 32., 31.75, 15.5, 16.5, 16., 15.5])
     assert np.allclose(a3_product, a3_expected)
-
     return True
 
 
