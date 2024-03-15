@@ -228,6 +228,77 @@ def audible(f, db):
 
 # ------------------------------------------------------------------------
 
+def compand(s: int) -> int:
+    """
+    Map 16-bit nonlinearly to 15-bit numbers.
+    Take a number in the range 0-65536 (i.e., 2 ** 16)
+    and map it to one in the range 0-32767 (2 ** 15 − 1).
+    Small numbers are less affected than large ones.
+
+    >>> s = 65536  # NB would map to 16 bits 1111 1111 1111 1111
+    >>> compand(s)
+    32767
+
+    >>> s = 50
+    >>> compand(s)
+    17
+
+    """
+    return round(32767 * ((2 ** (s / 65536)) - 1))
+
+
+sampling_rates = [  # Hz.
+    22050,  # e.g. MPEG
+    44100,  # e.g. CD
+    48000,  # e.g. DVD
+]
+
+
+bit_rates = [  # kbit/s
+    8, 16, 24, 32,
+]
+
+
+def bits_per_frame(
+        bit_rate: int = bit_rates[0],
+        samples_per_frame: int = 1000,  # TODO
+        sampling_rate: int = sampling_rates[0],
+) -> float:
+    return bit_rate * samples_per_frame / sampling_rate
+
+
+def spectral_flatness(a: np.array):
+    """
+    [NB: bonus function, not in the textbook lecture notes]
+
+    Measure a signal's `flatness'.
+    Random data (e.g., white noise) is maximally flat (has minimum redundancy).
+    The less noisy the signal, the less flat, the more redundancy, the more to compress.
+
+    >>> signal = np.array(range(100))
+    >>> psd(signal).round(5)
+    0.03003
+
+    >>> noise = np.random(100)
+    >>> psd(a).round(5)
+    0.03003
+
+    """
+    # Power Spectral Density (PSD)
+    sxx = np.abs(np.fft.fft(a))**2
+
+    # geometric mean:
+    sxx_geom = np.exp(np.mean(np.log(sxx)))
+
+    # arithmetic mean:
+    sxx_arith = np.mean(sxx)
+
+    # Compute the spectral flatness measure (SFM)
+    return sxx_geom / sxx_arith
+
+
+# ------------------------------------------------------------------------
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
