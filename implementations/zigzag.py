@@ -54,7 +54,7 @@ def transform(
 ) -> np.array:
     """
     Implements the Zigzag scan of a matrix as used in jpeg.
-    Use this same `transform` funtion to convert
+    Use this same `transform` function to convert
     from flat (1 x n) to shape (m x n, specifying the destination shape with the `shape` argument)
     and vice versa (mxn source to flat 1xn).
 
