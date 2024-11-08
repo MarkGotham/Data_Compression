@@ -4,6 +4,10 @@
 import numpy as np
 import scipy.fft as fft
 
+try:
+    import matrix_basics
+except:
+    from . import matrix_basics
 
 # Code: New implementations
 # Example values from Salomon and Motta Handbook of Data Compression, 5th Edition.
@@ -48,7 +52,7 @@ def create_DCT_matrix(
     (Compare and contrast also with the DCT directly on a signal at `dct`, below).
     Test properties.
 
-    The DCT matrix is bascially the result of a DCT on in i-matrix of the given size.
+    The DCT matrix is bascially the result of a DCT on an i-matrix of the given size.
     First with scipy:
 
     >>> i = np.eye(8)
@@ -146,7 +150,7 @@ def dct(
         y[k] = 2 * sum(
             [a[n] * np.cos(
                 (np.pi * k * ((2 * n) + 1)) / (2 * N)  # This line (k, n, N)
-            ) for n in range(N)
+            ) for n in range(N)  # 0 to N-1
              ]
         )
 
@@ -214,15 +218,15 @@ def dct_2d(
     :param double_transpose: An equivalent method that doubly transposes `a` to get at the two axes.
     :return: array, DCT'd in 2 d.
     """
-    if double_transpose:  # An alternative
+    if double_transpose:  # By transposing the array back and forth. An alternative (not default).
         return fft.dct(
             fft.dct(
                 a.transpose(),
                 norm="ortho"
             ).transpose(),
             norm="ortho"
-        )  # default is over the last axis (i.e., axis=-1, i.e., not 0)
-    else:
+        )
+    else:  # By specifying the axis. Default is the last axis (i.e., axis=-1), so setting axis=0 gets the other one.
         return fft.dct(
             fft.dct(
                 a,
@@ -230,65 +234,46 @@ def dct_2d(
                 norm="ortho"
             ),
             norm="ortho"
-        )  # default is over the last axis (i.e., axis=-1, i.e., not 0)
+        )
 
 
 def test_roundtrip(
-        a: np.array
+        a: np.array,
+        quant: bool = True
 ) -> np.array:
     """
     Implements a roundtrip test on a 2-d array and returns the value and position of the largest divergence.
     I.e.,
     - Take an array (a),
-    - run DCT,
-    - quant (to nearest integer in this case),
-    - run IDCT,
-    - compare change on each item (abs diff in this case).
+    - DCT-N,
+    - optionally quantize and then reverse quantize (with `quantize(reconstruct=True)`),
+    - IDCT-N,
+    - compare change on each item to return the size and position of the greatest (abs) diff.
 
-    Using the `continuous_tone_pattern` matrix from Salomon's example.
+    This function returns the value of `max_diff_val_and_location`
+    except where that largest difference is 0, in which case the function returns `None`.
 
-    >>> cont_dct = fft.dctn(continuous_tone_pattern, norm="ortho").round(0)
-    >>> cont_dct
-    array([[240.,   0., -89.,   0.,   0.,   0.,  -6.,   0.],
-           [  0.,   0.,   0.,   0.,   0.,   0.,   0.,   0.],
-           [-89.,   0.,   0.,   0.,   0.,   0.,   0.,   0.],
-           [  0.,   0.,   0.,   0.,   0.,   0.,   0.,   0.],
-           [  0.,   0.,   0.,   0.,   0.,   0.,   0.,   0.],
-           [  0.,   0.,   0.,   0.,   0.,   0.,   0.,   0.],
-           [ -6.,   0.,   0.,   0.,   0.,   0.,   0.,   0.],
-           [  0.,   0.,   0.,   0.,   0.,   0.,   0.,   0.]])
+    Using the `continuous_tone_pattern` matrix from Salomon's example,
+    >>> test_roundtrip(continuous_tone_pattern, quant=True)
+    (5.83, (0, 0))
 
-    >>> fft.idctn(cont_dct, norm="ortho").round(2)
-    array([[ 0.12, 10.02, 20.1 , 30.  , 30.  , 20.1 , 10.02,  0.12],
-           [10.02, 19.92, 30.  , 39.9 , 39.9 , 30.  , 19.92, 10.02],
-           [20.1 , 30.  , 40.08, 49.98, 49.98, 40.08, 30.  , 20.1 ],
-           [30.  , 39.9 , 49.98, 59.88, 59.88, 49.98, 39.9 , 30.  ],
-           [30.  , 39.9 , 49.98, 59.88, 59.88, 49.98, 39.9 , 30.  ],
-           [20.1 , 30.  , 40.08, 49.98, 49.98, 40.08, 30.  , 20.1 ],
-           [10.02, 19.92, 30.  , 39.9 , 39.9 , 30.  , 19.92, 10.02],
-           [ 0.12, 10.02, 20.1 , 30.  , 30.  , 20.1 , 10.02,  0.12]])
-
-    >>> test_roundtrip(continuous_tone_pattern)
-    (0.12, (0, 0))
-
-    So the largest diff is the 0 vs 0.012 in position 0, 0 (top left).
+    the version with no `quantize` step return an array with no difference:
+    >>> test_roundtrip(continuous_tone_pattern, quant=False) is None
+    True
 
     """
-    dct_round = fft.dctn(a, norm="ortho").round(0)
-    idct_v = fft.idctn(dct_round, norm="ortho")
-    m, n = a.shape
-    assert m > 1
-    assert n > 1
-    max_diff = 0
-    diff_ref = None
-    for i in range(m):
-        for j in range(n):
-            this_diff = abs(a[i][j] - idct_v[i][j])
-            if this_diff > max_diff:
-                max_diff = this_diff
-                diff_ref = (i, j)
-
-    return round(max_diff, 2), diff_ref
+    dct_round = fft.dctn(a, norm="ortho")
+    if quant:
+        dct_quant = matrix_basics.quantize(dct_round)
+        dct_unquant = matrix_basics.quantize(dct_quant, reconstruct=True)
+        idct_v = fft.idctn(dct_unquant, norm="ortho")
+    else:
+        idct_v = fft.idctn(dct_round, norm="ortho")
+    d = matrix_basics.max_diff_val_and_location(a, idct_v)
+    if d[0] == 0:
+        return None
+    else:
+        return d
 
 
 # ------------------------------------------------------------------------
