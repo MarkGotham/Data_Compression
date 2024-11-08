@@ -286,7 +286,7 @@ def max_diff_val_and_location(
 ) -> tuple:
     """
     Returns the value and position of the largest divergence between
-    equivalent entries of the two input arrays (a and b)
+    equivalent entries of the two input arrays (a and b).
     Raises an error if the two input arrays (a and b) are not of the same shape,
     and if either dimension is not greater than 1.
 
