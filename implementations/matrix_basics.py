@@ -203,7 +203,8 @@ theta_hat = np.array(
 def quantize(
         a: np.array,
         q: np.array = quantization_table,
-        reconstruct: bool = False
+        reconstruct: bool = False,
+        use_midtread: bool = True,
 ) -> np.array:
     """
     Quantize one square array (a) using another (q).
@@ -232,7 +233,8 @@ def quantize(
 
     :param a: input np.array.
     :param q: the quantization_table
-    :param reconstruct: If False (default), perform quantisation; if True reverse the process.
+    :param reconstruct: If `False` (default), perform quantization (divide); if `True` reverse the process (multiply).
+    :param use_midtread: use the midtread rounding function. See `midtread()`.
     :return: the original array (a), modified.
     """
 
@@ -246,7 +248,8 @@ def quantize(
                 x = a[i][j] * q[i][j]
             else:
                 x = a[i][j] / q[i][j]
-            a[i][j] = midtread(x)
+            if use_midtread:  # else no change
+                a[i][j] = midtread(x)
 
     return a
 
@@ -260,11 +263,12 @@ def midtread(x: float) -> int:
     >>> midtread(num)
     1
 
-    Same as:
+    Note that this is equivalent to ...
+
     >>> int(np.round(num))
     1
 
-    Different from:
+    ... but is different from ...
 
     >>> int(num)
     0
@@ -274,6 +278,41 @@ def midtread(x: float) -> int:
     """
 
     return int(x + 0.5)
+
+
+def max_diff_val_and_location(
+        a: np.array,
+        b: np.array,
+) -> tuple:
+    """
+    Returns the value and position of the largest divergence between
+    equivalent entries of the two input arrays (a and b)
+    Raises an error if the two input arrays (a and b) are not of the same shape,
+    and if either dimension is not greater than 1.
+
+    >>> test_1 = np.array([[0, 1], [2, 3]])
+    >>> test_2 = np.array([[0, 1], [2, 4]])
+    >>> max_diff_val_and_location(test_1, test_2)
+    (1, (1, 1))
+
+    """
+
+    assert a.shape == b.shape
+
+    m, n = a.shape
+    assert m > 1
+    assert n > 1
+
+    max_diff = 0
+    diff_ref = None
+    for i in range(m):
+        for j in range(n):
+            this_diff = abs(a[i][j] - b[i][j])
+            if this_diff > max_diff:
+                max_diff = this_diff
+                diff_ref = (i, j)
+
+    return round(max_diff, 2), diff_ref
 
 
 # ------------------------------------------------------------------------
