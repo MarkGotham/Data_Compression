@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
@@ -40,10 +39,10 @@ def wavelength_frequency(
 
 
 def tonotopic(
-    x: int | float,
-    a: int | float = 2,
-    b: int | float = 4,
-    c: int | float = 10
+    x: Union[int, float],
+    a: Union[int, float] = 2,
+    b: Union[int, float] = 4,
+    c: Union[int, float] = 10
 ) -> float:
     """
     Maps x in the range 0-30 to a value in the range 2000-20 with a smooth, logarithmic gradient.
@@ -65,7 +64,7 @@ def tonotopic(
 
 
 def plot_tonotopic(
-    basilar_length: int | float = 30,
+    basilar_length: Union[int, float] = 30,
     increment: int = 1,
     reference_lines: bool = True,
     write_not_show: bool = True,

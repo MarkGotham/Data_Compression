@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
-
-
+from typing import Union
 import matplotlib.pyplot as plt
 import pandas as pd
-
 
 from pathlib import Path
 THIS_DIR = Path(__file__).parent
 
 
 def plot_rgb_csv(
-    file_path: str | Path = THIS_DIR / "data" / "rgb.csv",
-    x_label: str | None = "Wavelength $\lambda$",
-    y_labels: list | None = None,
+    file_path: Union[str, Path] = THIS_DIR / "data" / "rgb.csv",
+    x_label: Union[str, None] = "Wavelength $\lambda$",
+    y_labels: Union[list, None] = None,
     write_not_show: bool = True,
-    write_path: Path | str = THIS_DIR / "plots" / "rgb_data.pdf"
+    write_path: Union[Path, str] = THIS_DIR / "plots" / "rgb_data.pdf"
 ) -> None:
     """
     Plots cone spectral sensitivities data after Stockman & Sharpe (2000)
