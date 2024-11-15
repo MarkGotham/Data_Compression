@@ -1,12 +1,25 @@
 ## Background
 
 The JPEG compression routine includes the following steps:
-- split images of any size into 8x8 size block
-- subtract 128 from each value,
-- implement and apply the DCT (a variant of the DFT that only takes the cosines),
-- 'quantize' using the 'uniform midtread quantization' where each value in the 8x8 matrix is:
-  - divided by the corresponding value in the reference matrix given as **Q** below.
-  - rounded each value to the nearest integer using midtread.
+1. split images of any size into 8x8 size block
+2. subtract 128 from each value,
+3. implement and apply the DCT (see 'DCT' below) 
+4. 'quantize' using the 'uniform midtread quantization' (see 'Quantization' below)
+5. Encode the DC coefficient (position (0, 0)) and the AC coefficients using Huffman coding. 
+
+
+### DCT
+
+The discrete cosine transform (DCT) is a variant of the discrete Fourier transform (DFT) that only takes the cosines.
+So, we're still in the business of expressing a complex signal in terms of periodic components,
+here a sum of cosine functions.
+
+
+### Quantization
+
+In this context, 'Quantization' involves taking each value in an 8x8 matrix and:
+- dividing by the corresponding value in the reference matrix, such as the one given as **Q** below.
+- rounding to the nearest integer using 'midtread' mapping (`int(x + 0.5)`, see `matrix_basics.midtread`).
 
 $$
 {\bf Q} = \begin{pmatrix}
@@ -21,16 +34,18 @@ $$
 \end{pmatrix}
 $$
 
-The reconstruction involves the same process in reverse.
+The reconstruction involves the same process in reverse, now multiplying rather than dividing.
 
 
 ## Task
 
 - Type: Implement
-- Task: Implement the quantization and reconstruction processes described above.
+- Task: Implement the quantization and reconstruction processes described in steps 3–4 above (and 1-2 if you like).
 - Reference implementation:
-  - quantize and reconstruct: `matrix_basics.quantize()` including arguments for:
+  - Sample values are given `jpeg.continuous_tone_pattern`, or use your own
+  - for DCT: local implementation at `jpeg.dct` and/or remote in [scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.dct.html)
+    - Bonus: create from scratch.
+  - for quantization and reconstruction: `matrix_basics.quantize()` including arguments for:
     - `reconstruct` (bool)
     - the quantization table to use (with **Q** above as default: `matrix_basics.quantization_table`)
-  - Sample values are given `jpeg.continuous_tone_pattern`
   - for DCT, create (bonus) or use `jpeg.dct_matrix` and/or [scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.dct.html)

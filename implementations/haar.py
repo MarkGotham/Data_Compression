@@ -1,6 +1,5 @@
 # coding: utf-8
 
-
 import numpy as np
 from typing import Union
 
@@ -530,56 +529,6 @@ def values_from_salomon():
     a3_expected = np.array([143.375, 64.125, 32., 31.75, 15.5, 16.5, 16., 15.5])
     assert np.allclose(a3_product, a3_expected)
     return True
-
-
-# -------------------------------------------------------------------------------------------------
-
-# RCT, ICT
-
-def prep(
-        rgb: tuple,
-        dc_shift: int = 255
-) -> tuple:
-    """
-    Return the three colour components
-    of a pixel (after DC shifting from, e.g., rgb)
-
-    :param rgb: an RGB tuple.
-    :param dc_shift: the amount of shift for a space 0–2^k-1. Defaults to 255 for the 256 space.
-    """
-    i_0, i_1, i_2 = [(x - dc_shift) for x in rgb]
-    return i_0, i_1, i_2
-
-
-def rct(rgb: tuple) -> tuple:
-    """
-    Implements the RCT (reversible component transform).
-
-    Note, uses int() to truncate
-    as opposed to floor() which rounds down.
-
-    :param rgb: an RGB tuple.
-    :return:
-    """
-    i_0, i_1, i_2 = prep(rgb)
-
-    y_0 = int((i_0 + 2 * i_1 + i_2) / 4)
-    y_1 = i_2 - i_1
-    y_2 = i_0 - i_1
-    return y_0, y_1, y_2
-
-
-def ict(rgb: tuple) -> tuple:
-    """
-    Implements the ICT (irreversible component transform)
-    :param rgb: an RGB tuple.
-    :return:
-    """
-    i_0, i_1, i_2 = prep(rgb)
-    y_0 = (0.299 * i_0) + (0.587 * i_1) + (0.144 * i_2)
-    y_1 = (-0.16875 * i_0) - (0.33126 * i_1) + (0.5 * i_2)
-    y_2 = (0.5 * i_0) - (0.41869 * i_1) - (0.08131 * i_2)
-    return y_0, y_1, y_2
 
 
 # -------------------------------------------------------------------------------------------------
