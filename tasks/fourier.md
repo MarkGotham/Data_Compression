@@ -39,5 +39,5 @@ $$
      - Hint: use `np.dot(x, square_dft_matrix(n))`
 - Reference implementations:
   1. `fourier.square_dft_matrix()`
-  2. `fourier.dft()`
+  2. `fourier.dft_dot_product_steps()`
   3. `fourier.dft_at_once()`

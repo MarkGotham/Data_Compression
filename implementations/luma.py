@@ -1,4 +1,8 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
+# Implementations for Data Compression exercises.
+# Source: https://github.com/MarkGotham/Data_Compression/tree/main
+
+
 import numpy as np
 
 rgb_weights_1 = (0.2126, 0.7152, 0.0722)

@@ -7,6 +7,7 @@ and then 'decode' it back to the original (or nearly).
 A classic way to test the effectiveness of a system like this is to run a 
 'roundtrip' where you compare the data you star with to what comes back from an encoding-decoding cycle. 
 
+
 ## Task
 
 - Type: Implement roundtrip
@@ -17,3 +18,12 @@ A classic way to test the effectiveness of a system like this is to run a
   - Take the source data, run the fft on that source, and then the inverse fft on the fft output.
   - Compare the final data with the original.
 - Reference implementation in the notebook: `test_roundtrip()`
+
+
+## Also on this repository
+
+The [`jpeg` notebook](https://github.com/MarkGotham/Data_Compression/blob/main/jpeg.ipynb)
+runs a similar roundtrip, with the following differences:
+- the additional consideration of quantization,
+- the use of DCT,
+- additional abstraction (local implementations on the repo).

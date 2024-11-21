@@ -1,9 +1,13 @@
-# -*- coding: utf-8 -*-
-from typing import Union
+# coding: utf-8
+# Implementations for Data Compression exercises.
+# Source: https://github.com/MarkGotham/Data_Compression/tree/main
+
+
 import matplotlib.pyplot as plt
 import pandas as pd
-
 from pathlib import Path
+from typing import Union
+
 THIS_DIR = Path(__file__).parent
 
 

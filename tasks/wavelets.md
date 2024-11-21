@@ -6,16 +6,6 @@
 - There are also many use cases, including for our purposes of data compression.
 
 
-## Exercises in this repo
-
-This exercise is exploratory.
-Optionally, you can also demonstrate the two properties above.
-
-For other, related exercises, click below for:
-  - [the mathematics of the Haar wavelets](https://github.com/MarkGotham/Data_Compression/blob/main/haar.ipynb)
-  - [some aspects of the application of Wavelets to JPEG-2000](https://github.com/MarkGotham/Data_Compression/blob/main/jpeg2000.ipynb)
-
-
 ## Task
 
 - Type:
@@ -29,3 +19,13 @@ For other, related exercises, click below for:
 - Bonus:
   - Implement (re-create) one or more wavelets from scratch.
   - Demonstrate the properties of a given wavelet (e.g., integral sum to 0). 
+
+
+## Also on this repository
+
+This exercise is exploratory.
+Optionally, you can also demonstrate the two properties above.
+
+For other, related exercises, click below for:
+  - [the mathematics of the Haar wavelets](https://github.com/MarkGotham/Data_Compression/blob/main/haar.ipynb)
+  - [some aspects of the application of Wavelets to JPEG-2000](https://github.com/MarkGotham/Data_Compression/blob/main/jpeg2000.ipynb)

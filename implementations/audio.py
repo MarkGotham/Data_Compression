@@ -1,4 +1,7 @@
 # coding: utf-8
+# Implementations for Data Compression exercises.
+# Source: https://github.com/MarkGotham/Data_Compression/tree/main
+
 
 import math
 import matplotlib.pyplot as plt
@@ -85,6 +88,8 @@ def traunmuller(f):
 def plot_bark_models(
         min_fq: int = 20,
         max_fq: int = 20000,
+        x_label: str = "Bark",
+        y_label: str = "Frequency, Hz",
         write_not_show: bool = False,
         write_path: Path = THIS_DIR / "plots" / "bark_models.pdf",
 ) -> None:
@@ -112,6 +117,9 @@ def plot_bark_models(
 
     ax.legend(loc='upper left')
     plt.tight_layout()
+
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
 
     if write_not_show:
         plt.savefig(write_path)
@@ -228,25 +236,6 @@ def audible(f, db):
 
 # ------------------------------------------------------------------------
 
-def compand(s: int) -> int:
-    """
-    Map 16-bit nonlinearly to 15-bit numbers.
-    Take a number in the range 0-65536 (i.e., 2 ** 16)
-    and map it to one in the range 0-32767 (2 ** 15 − 1).
-    Small numbers are less affected than large ones.
-
-    >>> s = 65536  # NB would map to 16 bits 1111 1111 1111 1111
-    >>> compand(s)
-    32767
-
-    >>> s = 50
-    >>> compand(s)
-    17
-
-    """
-    return round(32767 * ((2 ** (s / 65536)) - 1))
-
-
 sampling_rates = [  # Hz.
     22050,  # e.g. MPEG
     44100,  # e.g. CD
@@ -269,8 +258,6 @@ def bits_per_frame(
 
 def spectral_flatness(a: np.array):
     """
-    [NB: bonus function, not in the textbook lecture notes]
-
     Measure a signal's `flatness'.
     Random data (e.g., white noise) is maximally flat (has minimum redundancy).
     The less noisy the signal, the less flat, the more redundancy, the more to compress.

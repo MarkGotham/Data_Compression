@@ -49,3 +49,13 @@ The reconstruction involves the same process in reverse, now multiplying rather 
     - `reconstruct` (bool)
     - the quantization table to use (with **Q** above as default: `matrix_basics.quantization_table`)
   - for DCT, create (bonus) or use `jpeg.dct_matrix` and/or [scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.dct.html)
+
+
+## Also on this repository
+
+The [`fourier_rountrip` notebook](https://github.com/MarkGotham/Data_Compression/blob/main/fourier_roundtrip.ipynb)
+runs a similar roundtrip, with the following differences:
+- no consideration of quantization,
+- standard Fourier (not DCT),
+- no recourse to local implementations on the repo (useful in case of set up issues).
+

@@ -1,3 +1,8 @@
+# coding: utf-8
+# Implementations for Data Compression exercises.
+# Source: https://github.com/MarkGotham/Data_Compression/tree/main
+
+
 """
 An implementation of the zigzag read/write method.
 

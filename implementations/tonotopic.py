@@ -1,4 +1,8 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
+# Implementations for Data Compression exercises.
+# Source: https://github.com/MarkGotham/Data_Compression/tree/main
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
