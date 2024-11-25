@@ -14,7 +14,8 @@ A typical technique for video compression involves:
 ## Motion Compensation
 
 Not only are successive frames generally similar,
-but more specifically, it is common for a part (or 'block') in one frame to more to a different location in the next frame,
+but more specifically, it is common for a part (or 'block') in one frame 
+to move to a different location in the next frame,
 e.g., an object moving against a static background.
 This can be expressed in terms of the 'block's
 - previous location,
@@ -24,6 +25,52 @@ This can be expressed in terms of the 'block's
 Motion compensation is:
 - effective if objects are just translated (moved up/down and side/side)
 - not so effective if objects are scaled (made bigger/smaller) or rotated.
+
+
+## Example
+
+Here's an 8x8 matrix, that's mostly 0s, apart from a few 1s:
+$$
+\begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+\end{pmatrix}
+$$
+
+
+And here's the same 8x8 grid, and the same 'figure', shifted:
+$$
+\begin{pmatrix}
+0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 1 & 0 & 0 & 0 & 0\\
+0 & 1 & 1 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+\end{pmatrix}
+$$
+
+Finally, this is the motion from the first state to the second that we're trying to capture: 
+$$
+\begin{pmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 &0\\
+0 & \uparrow & \uparrow & \uparrow & 0 & 0 & 0 & 0\\
+0 & \uparrow  & \uparrow & \uparrow & 0 & 0 & 0 & 0\\
+0 & \uparrow & \uparrow & \uparrow & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 &0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 &0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 &0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 &0\\
+\end{pmatrix}
+$$
 
 
 ## Measuring Change

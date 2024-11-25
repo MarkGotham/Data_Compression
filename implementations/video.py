@@ -98,18 +98,24 @@ def block_search(
 
     >>> ref, comp = make_test_array_block()
     >>> ref
-    array([[0, 0, 0, 0, 0],
-           [0, 1, 1, 1, 0],
-           [0, 1, 0, 1, 0],
-           [0, 1, 1, 1, 0],
-           [0, 0, 0, 0, 0]])
+    array([[0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 1, 1, 1, 0, 0, 0, 0],
+           [0, 1, 0, 1, 0, 0, 0, 0],
+           [0, 1, 1, 1, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0]])
 
     >>> comp
-    array([[0, 1, 1, 1, 0],
-           [0, 1, 0, 1, 0],
-           [0, 1, 1, 1, 0],
-           [0, 0, 0, 0, 0],
-           [0, 0, 0, 0, 0]])
+    array([[0, 1, 1, 1, 0, 0, 0, 0],
+           [0, 1, 0, 1, 0, 0, 0, 0],
+           [0, 1, 1, 1, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0]])
 
     >>> block_search(ref, comp, (1, 1), (3, 3), (1, 1))
     (0, 1)
@@ -165,12 +171,21 @@ def block_search(
 def make_test_array_block():
     """Make a test array pair for a simple block search demo."""
     shared = [
-        [0, 1, 1, 1, 0],
-        [0, 1, 0, 1, 0],
-        [0, 1, 1, 1, 0]
+        [0, 1, 1, 1, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0, 0, 0, 0]
     ]
-    empty_row = [[0] * 5]
-    return np.array(empty_row + shared + empty_row), np.array(shared + empty_row + empty_row)
+    empty_row = [[0] * 8]
+
+    b = empty_row + shared
+    for i in range(4):
+        b += empty_row
+
+    c = shared
+    for i in range(5):
+        c += empty_row
+
+    return np.array(b), np.array(c)
 
 
 def make_test_array_log():
