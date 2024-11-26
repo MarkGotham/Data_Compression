@@ -16,30 +16,23 @@ THIS_DIR = Path(__file__).parent
 σ = 20
 
 
-def gaussian_cone_sensitivity(wavelength, peak_wavelength, sigma):
+def gaussian_cone_sensitivity(
+        wavelengths: np.array,
+        peak_wavelength: int,
+        sigma: int = σ
+) -> np.array:
     """
     Gaussian model of cone cell sensitivity.
     """
-    return np.exp(-((wavelength - peak_wavelength) ** 2) / (2 * sigma ** 2))
+    return np.exp(-((wavelengths - peak_wavelength) ** 2) / (2 * sigma ** 2))
 
 
-def s_resp(wavelength):
-    """S-cones (blue)"""
-    return gaussian_cone_sensitivity(wavelength, λ_S, σ)
-
-
-def m_resp(wavelength):
-    """M-cones (green)"""
-    return gaussian_cone_sensitivity(wavelength, λ_M, σ)
-
-
-def l_resp(wavelength):
-    """L-cones (red)"""
-    return gaussian_cone_sensitivity(wavelength, λ_L, σ)
-
-
-def cone_resp(wavelength):
-    return s_resp(wavelength), m_resp(wavelength), l_resp(wavelength)
+def cone_resp(wavelengths: np.array):
+    """Models the sensitivity of S, M, and L cone cells in one."""
+    s_resp = gaussian_cone_sensitivity(wavelengths, peak_wavelength=λ_S)
+    m_resp = gaussian_cone_sensitivity(wavelengths, peak_wavelength=λ_M)
+    l_resp = gaussian_cone_sensitivity(wavelengths, peak_wavelength=λ_L)
+    return s_resp, m_resp, l_resp
 
 
 def plot_resp(
@@ -52,7 +45,7 @@ def plot_resp(
 ):
     """
     Approximate Gaussian modelling for RGB values, using
-    `s_resp`, `m_resp`, and `l_resp`.
+    `gaussian_cone_sensitivity` modelling for S, M, and L cone cells.
 
     :param start: Wavelength value to start at, in nm.
     :param stop: Wavelength value to stop at, in nm.
@@ -67,8 +60,10 @@ def plot_resp(
     plt.plot(wavelengths, R_S, label='S-cone', color='b')
     plt.plot(wavelengths, R_M, label='M-cone', color='g')
     plt.plot(wavelengths, R_L, label='L-cone', color='r')
+    plt.ylim(0, 1)
     plt.xlabel('Wavelength (nm)')
-    plt.ylabel('Normalized resp')
+    plt.ylabel('Normalized responsivity')
+    plt.tight_layout
 
     if reference_lines:
         plt.axvline(λ_S, linestyle='--', color='k')
