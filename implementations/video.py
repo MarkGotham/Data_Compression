@@ -189,7 +189,16 @@ def make_test_array_block():
 
 
 def make_test_array_log():
-    """Make a test array to match (in the simplest way) the log search example."""
+    """
+    Make a test array to match (in the simplest way) the log search example:
+    a 17-by-17 block of zeros,
+    with specific positions assigned
+    increasing values.
+
+    >>> make_test_array_log()[4]
+    array([0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.25, 0.  , 0.  ,
+           0.  , 0.5 , 0.  , 0.75, 1.  , 0.  ])
+    """
     test_array = np.zeros((17, 17))
     test_array[4, 8] = 0.25
     test_array[4, 12] = 0.5
