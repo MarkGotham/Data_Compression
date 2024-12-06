@@ -12,7 +12,7 @@ This notebook provides a space for experimenting with combined sound and noise s
 - Type: Explore/experiment
 - Task:
   - Play around with the frequency and amplitude of
-    - the periodic signal (and or composite signal),
+    - the periodic signal (and/or composite signal),
     - the noise (in which case, by filtering the frequency _range_)
   - Note your limits: when do you stop hearing the signal?
 - Bonus tasks:
