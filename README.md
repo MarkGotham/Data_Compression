@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
 
-# Data Compression
+# Data Compression for Digital Humanities and Computer Science (DCDHCS)
 
 ![The logo for DCDHCS](https://github.com/MarkGotham/Data_Compression/blob/main/DCDHCS_Logo.jpg?raw=true)
 
