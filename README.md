@@ -1,4 +1,12 @@
+![Version](https://img.shields.io/github/v/release/MarkGotham/Data_Compression?display_name=tag)
+![GitHub repo size](https://img.shields.io/github/repo-size/MarkGotham/Data_Compression)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+
+
 # Data Compression
+
+![The logo for DCDHCS](https://github.com/MarkGotham/Data_Compression/blob/main/DCDHCS_Logo.jpg?raw=true)
+
 
 This repo provides teaching resources for (mostly lossy) data compression.
 
@@ -56,4 +64,4 @@ Feedback, requests, suggestions are all welcome.
 
 Thanks and happy compressing,
 
-Mark Gotham, 2024
+Mark Gotham, 2023–present
