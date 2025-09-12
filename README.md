@@ -1,4 +1,5 @@
 ![Version](https://img.shields.io/github/v/release/MarkGotham/Data_Compression?display_name=tag)
+[![DOI](https://zenodo.org/badge/747293703.svg)](https://doi.org/10.5281/zenodo.17105311)
 ![GitHub repo size](https://img.shields.io/github/repo-size/MarkGotham/Data_Compression)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
