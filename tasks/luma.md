@@ -36,7 +36,13 @@ $$
 
 - Type: Implementation
 - Task: Implement $Y'$, $C_B$, \& $C_R$ using the constants given as default arguments.
+- Bonus:
+  - Experiment with alternative weightings,
+  - Import a real image (e.g., from scikit), take a 16x16 array and apply this transform.
+  Return both luminance values (a 16x16 array)
+  and two 8×8 blocks of chrominance samples (sampling every other value).
 - Reference implementation:
     `luma.brightness`,
     `luma.c_b`,
-    `luma.c_r`
+    `luma.c_r`,
+    `luma.mb_to_luma_cb_cr`
