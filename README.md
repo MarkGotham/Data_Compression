@@ -14,8 +14,11 @@ This repo provides teaching resources for (mostly lossy) data compression.
 ## About
 
 This material has been developed
-for students in computer science (Durham University, course COMP3687)
-and digital humanities (KCL, Introduction to Digital Humanities, 7AAVIN01).
+for students in computer science
+(at [Durham University](https://www.durham.ac.uk/departments/academic/computer-science/))
+and digital humanities (at
+[KCL](https://www.kcl.ac.uk/), across the MA programmes in the
+[Department of Digital Humanities](https://www.kcl.ac.uk/ddh)).
 
 The implementation tasks vary in difficulty as indicated on the table below,
 ranked from 1 to 5 as least to most difficult.
