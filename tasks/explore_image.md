@@ -32,4 +32,10 @@ Some alternatives include ...
  ## Task
 
 - Type: Explore
-- Task: Import and explore `scikit-image` and/or another one of above libraries for handling images.
+- Task: Import and explore `scikit-image`
+- Hints:
+  - `import skimage as ski` and retrieve a stock image e.g., `ski.data.camera()`
+  - What is the data type of this image?
+  - What is the size of this data / image?
+  - Display the image
+  - Display _part of_ the image
