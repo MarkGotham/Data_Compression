@@ -5,9 +5,11 @@ channels:
   - defaults
 
 dependencies:
-  - python>=3.9
-  - numpy
-  - pip
-  - scipy
   - matplotlib
-
+  - numpy
+  - opencv-python
+  - pip
+  - python>=3.9
+  - scipy
+  - scenedetect
+  - scikit-image
