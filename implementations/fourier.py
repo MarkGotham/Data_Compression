@@ -14,7 +14,7 @@ def square_dft_matrix(n: int) -> np.array:
 
     >>> n = 8
     >>> np_square = np.fft.fft(np.eye(n)) / np.sqrt(n)
-    >>> np.isclose(square_dft_matrix(n).all(), np_square.all())
+    >>> np.allclose(square_dft_matrix(n), np_square)
     True
 
     :param n: the size (length and width) of the square matrix. Int.
@@ -42,6 +42,11 @@ def dft_dot_product_steps(x: np.array) -> np.array:
     """
     Implement Fourier transform from a signal
     by creating a square DFT matrix and doing dot product together.
+
+    >>> x = np.array([1, 2, 3, 4], dtype=np.complex128)
+    >>> np.allclose(dft_dot_product_steps(x), dft_at_once(x))
+    True
+
     """
     x = x.astype(np.complex128)
     n = len(x)
@@ -50,11 +55,10 @@ def dft_dot_product_steps(x: np.array) -> np.array:
         nums = []
         for j in range(n):
             sq = np.exp(-2j * np.pi * i * j / n)  # value from what would be the square dft matrix
-            nums.append(x[i] * sq)
+            nums.append(x[j] * sq)
         n_by_1.append(sum(nums))
 
-    return np.array(n_by_1).astype(np.complex128)
-
+    return np.array(n_by_1).astype(np.complex128) / np.sqrt(n)
 
 if __name__ == "__main__":
     import doctest
