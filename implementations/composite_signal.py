@@ -172,7 +172,7 @@ def quick_fft(
     if 0.5 then return half removing the symmetry.
     If outside the range 0-1, then raise ValueError.
     :param write_not_show: Chose between saving and showing.
-    :param write_path: If writing/saving, chose a file location and name.
+    :param write_path: If writing/saving, choose a file location and name.
     :return: None (plot)
     """
     if not composite:
@@ -205,5 +205,3 @@ def quick_fft(
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-    # run()
-    # quick_fft()
