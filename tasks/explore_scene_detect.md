@@ -4,7 +4,7 @@ There are several python libraries for scene change detection.
 This notebook demonstrates a basic, 'off-the-shelf' use of the `scenedetect` library.
 
 Installation:
--`pip install scenedetect`
+- `pip install scenedetect`
 - and you'll also need `pip install opencv-python` if you don't have it already.
 
 The notebook also assumes you have the whole repository 
