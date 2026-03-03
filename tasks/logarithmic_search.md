@@ -1,14 +1,25 @@
 ## Background
 
-In [`distortion`](https://github.com/MarkGotham/Data_Compression/blob/main/distortion.ipynb)
-we met 'block search' where the expectation is that
-the closest match for an object within neighbouring frames is
-also in (nearly) neighbouring positions.
+There are several approaches to video image comparison and compression.
+In [`explore_scene_detect`](https://github.com/MarkGotham/Data_Compression/blob/main/explore_scene_detect.ipynb)
+we experimented with off-the-shelf methods for the detection of scene changes.
+Scene change detection typically considers whether _all_ pixels are similar:
+a large change overall indicates a likely scene change.
 
-Logarithmic search considers an alternative,
-in which we make no such assumption at the outset
-and work in a more 'top down' fashion.
-Logarithmic search:
+Then, in [`distortion`](https://github.com/MarkGotham/Data_Compression/blob/main/distortion.ipynb)
+we met 'block search' where the expectation is that:
+- most pixels are very similar from one frame to the next,
+- there is a change to a part of the image (typically a "subject" in the foreground), 
+- the closest match for an object within neighbouring frames is in nearby position positions.
+
+Logarithmic search considers an alternative in which we:
+- are still seeking a match, 
+- make no such assumption _where_ the match is.
+
+That is, in block search, there's a similar match _nearby_;
+in logarithmic search, there's a match _somewhere_ in the frame.
+
+Logarithmic search works in a more 'top down' fashion, it:
 - starts in the middle position
 - bisects the available space in each direction
 - takes the best match and continues to iterate from there.
