@@ -6,9 +6,9 @@ Video compression is based on two kinds of redundancy:
 - Temporal redundancy:
     Most frames in a video are likely to be very similar to its immediate neighbour (predecessor and successor).
 
-A typical technique for video compression involves:
-- encoding the first frame using a still image compression method.
-- encodes several successive frames in terms of their difference from the frame before.
+A typical technique for video compression involves encoding:
+- the _first_ frame using a still image compression method, and
+- several _successive_ frames in terms of their difference from the frame before.
 
 
 ## Motion Compensation
